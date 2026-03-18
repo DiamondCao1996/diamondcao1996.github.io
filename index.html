@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Huizhong Cao — AI·XR·Design Researcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0c10;
+      --bg2: #111118;
+      --bg3: #16161f;
+      --card: #1a1a25;
+      --border: rgba(180, 160, 255, 0.12);
+      --purple: #a78bfa;
+      --purple-light: #c4b5fd;
+      --gold: #d4a853;
+      --gold-light: #e8c47a;
+      --text: #e8e6f0;
+      --text-muted: #8a86a0;
+      --text-dim: #5a5670;
+      --accent-teal: #5eead4;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Canvas background ── */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* ── Noise overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ── Layout ── */
+    .site-wrapper {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(12, 12, 16, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--purple-light);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--purple-light); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 4rem;
+      align-items: center;
+      padding: 8rem 6rem 6rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .hero-text { animation: fadeUp 1s ease both; }
+
+    .hero-tag {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(212, 168, 83, 0.3);
+      padding: 0.35rem 0.8rem;
+      border-radius: 2px;
+      margin-bottom: 1.8rem;
+      animation: fadeUp 1s 0.1s ease both;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 6vw, 6rem);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.2rem;
+      animation: fadeUp 1s 0.2s ease both;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--purple-light);
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2vw, 1.7rem);
+      font-weight: 300;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 2rem;
+      animation: fadeUp 1s 0.3s ease both;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 1s 0.4s ease both;
+    }
+
+    .hero-keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 1s 0.5s ease both;
+    }
+
+    .kw {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent-teal);
+      border: 1px solid rgba(94, 234, 212, 0.25);
+      padding: 0.25rem 0.7rem;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-links {
+      display: flex;
+      gap: 1rem;
+      animation: fadeUp 1s 0.6s ease both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.6rem;
+      font-size: 0.8rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--purple);
+      color: #0c0c10;
+      font-weight: 400;
+    }
+
+    .btn-primary:hover {
+      background: var(--purple-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(167, 139, 250, 0.3);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--purple);
+      color: var(--purple-light);
+      transform: translateY(-2px);
+    }
+
+    /* ── Hero Photo Card ── */
+    .hero-card {
+      animation: fadeUp 1s 0.3s ease both;
+      position: relative;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, var(--purple), transparent 50%, var(--gold));
+      border-radius: 6px;
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    .photo-container {
+      background: var(--card);
+      border-radius: 5px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: linear-gradient(135deg, #1a1a2e 0%, #2a1a3e 50%, #1a2a2e 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Replace this with your actual <img> tag */
+    .photo-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .photo-placeholder-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+
+    .photo-info {
+      padding: 1.2rem 1.4rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .photo-info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .photo-info-item svg { flex-shrink: 0; opacity: 0.6; }
+
+    .info-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ── Section wrapper ── */
+    .section {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 6rem 6rem;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 3rem;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--purple-light);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Experience ── */
+    .exp-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .exp-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem 2.2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--purple), var(--gold));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .exp-card:hover {
+      border-color: rgba(167, 139, 250, 0.3);
+      transform: translateX(4px);
+    }
+
+    .exp-card:hover::before { opacity: 1; }
+
+    .exp-role {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+
+    .exp-org {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--purple);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .exp-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .exp-bullets li {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      padding-left: 1.2rem;
+      position: relative;
+    }
+
+    .exp-bullets li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-size: 0.75rem;
+    }
+
+    .exp-meta {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .exp-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .exp-loc {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      margin-top: 0.3rem;
+    }
+
+    .exp-tag {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      border: 1px solid;
+    }
+
+    .tag-phd { color: var(--purple-light); border-color: rgba(167,139,250,0.3); }
+    .tag-founder { color: var(--gold); border-color: rgba(212,168,83,0.3); }
+    .tag-dev { color: var(--accent-teal); border-color: rgba(94,234,212,0.3); }
+
+    /* ── Education ── */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem;
+      transition: all 0.3s;
+    }
+
+    .edu-card:hover {
+      border-color: rgba(167,139,250,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+    }
+
+    .edu-degree {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+
+    .edu-school {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--purple);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .edu-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      margin-bottom: 0.8rem;
+    }
+
+    .edu-note {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .edu-award {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--gold);
+      border: 1px solid rgba(212,168,83,0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Skills ── */
+    .skills-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .skills-group-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .skill-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+
+    .chip {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+
+    .chip-tech {
+      background: rgba(167,139,250,0.08);
+      border: 1px solid rgba(167,139,250,0.2);
+      color: var(--purple-light);
+    }
+
+    .chip-tech:hover {
+      background: rgba(167,139,250,0.15);
+      transform: translateY(-2px);
+    }
+
+    .chip-soft {
+      background: rgba(212,168,83,0.06);
+      border: 1px solid rgba(212,168,83,0.2);
+      color: var(--gold-light);
+    }
+
+    /* ── Languages ── */
+    .lang-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .lang-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .lang-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text);
+      width: 90px;
+      letter-spacing: 0.05em;
+    }
+
+    .lang-dots {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 1px solid rgba(167,139,250,0.3);
+    }
+
+    .dot.filled { background: var(--purple); border-color: var(--purple); }
+
+    /* ── Proud of ── */
+    .proud-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .proud-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.8rem;
+      transition: all 0.3s;
+    }
+
+    .proud-card:hover {
+      border-color: rgba(167,139,250,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    }
+
+    .proud-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .proud-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--purple-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .proud-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ── Contact ── */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-intro {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 2rem;
+    }
+
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .contact-item:hover { color: var(--purple-light); }
+
+    .contact-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 4px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+
+    .contact-item:hover .contact-icon {
+      border-color: var(--purple);
+      background: rgba(167,139,250,0.1);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 6rem;
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-copy {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; padding: 7rem 3rem 4rem; }
+      .hero-card { display: none; }
+      .section { padding: 4rem 3rem; }
+      .edu-grid { grid-template-columns: 1fr 1fr; }
+      .proud-grid { grid-template-columns: 1fr; }
+      footer { padding: 2rem 3rem; }
+      nav { padding: 1rem 2rem; }
+    }
+
+    @media (max-width: 640px) {
+      .edu-grid { grid-template-columns: 1fr; }
+      .skills-wrapper { grid-template-columns: 1fr; }
+      .contact-wrapper { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .exp-card { grid-template-columns: 1fr; }
+    }
+
+    /* ── Scroll progress ── */
+    .progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--purple), var(--gold));
+      z-index: 200;
+      transition: width 0.1s;
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+<canvas id="bg-canvas"></canvas>
+
+<div class="site-wrapper">
+
+  <!-- ── Nav ── -->
+  <nav>
+    <span class="nav-logo">Huizhong Cao</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero" id="about">
+    <div class="hero-text">
+      <span class="hero-tag">PhD Candidate · Designer · Entrepreneur</span>
+      <h1 class="hero-name">Huizhong<br><em>Cao</em></h1>
+      <p class="hero-title">AI-integrated XR for optimized user experience<br>& smart production systems</p>
+      <p class="hero-desc">
+        Researcher at Chalmers University of Technology exploring the intersection of 
+        extended reality, artificial intelligence, and human-centered design. 
+        Passionate about building bridges between cutting-edge technology and 
+        meaningful human experiences across Industry 5.0 contexts.
+      </p>
+      <div class="hero-keywords">
+        <span class="kw">Digital Twin</span>
+        <span class="kw">VR / AR / XR</span>
+        <span class="kw">Cognitive Load</span>
+        <span class="kw">Human-Centric Automation</span>
+        <span class="kw">Industry 5.0</span>
+        <span class="kw">UX / UI</span>
+        <span class="kw">Social Robotics</span>
+      </div>
+      <div class="hero-links">
+        <a href="https://scholar.google.com/citations?user=7JIwY8oAAAAJ&hl=en" target="_blank" class="btn btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 10a8 8 0 0 1 7.162 3.44L24 9.5z"/></svg>
+          Google Scholar
+        </a>
+        <a href="https://www.linkedin.com/in/huizhongcao/" target="_blank" class="btn btn-outline">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="mailto:huizhong@chalmers.se" class="btn btn-outline">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email
+        </a>
+      </div>
+    </div>
+
+    <!-- Photo card — replace the placeholder with your actual photo -->
+    <div class="hero-card">
+      <div class="photo-container">
+        <div class="photo-placeholder">
+          <!--
+            TO ADD YOUR PHOTO:
+            Replace this entire <div class="photo-placeholder"> block with:
+            <img src="photo.jpg" alt="Huizhong Cao" style="width:100%;height:100%;object-fit:cover;object-position:top center;">
+          -->
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(167,139,250,0.3)" stroke-width="1">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span class="photo-placeholder-text">[ add photo.jpg ]</span>
+        </div>
+        <div class="photo-info">
+          <div class="photo-info-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Gothenburg, Sweden</span>
+          </div>
+          <div class="photo-info-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 9.74a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.59 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.93-.93a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 18"/></svg>
+            <span>+46 768842590</span>
+          </div>
+          <div class="photo-info-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span class="info-label">PhD · Mar 2023 – Mar 2025</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" style="max-width:1300px; margin: 0 auto 0 auto; padding: 0 6rem;">
+
+  <!-- ── Experience ── -->
+  <section class="section reveal" id="experience">
+    <p class="section-label">Career Path</p>
+    <h2 class="section-title">Research &<br><em>Professional Experience</em></h2>
+
+    <div class="exp-grid">
+
+      <div class="exp-card">
+        <div>
+          <div class="exp-role">PhD Candidate & Researcher</div>
+          <div class="exp-org">Chalmers University of Technology</div>
+          <ul class="exp-bullets">
+            <li>Digital twin and 3D modelling for sustainability in production systems</li>
+            <li>VR/AR/UI design to optimize production flow and human-centered machinery systems</li>
+            <li>Virtual training effectiveness study with VR and AI-integrated social robots — experiment design & demonstration</li>
+            <li>Cognitive load assessment via HRV, RSME, NASA-TLX and performance-based methods</li>
+            <li>Human-centric design approach for Industry 5.0</li>
+          </ul>
+          <span class="exp-tag tag-phd">Research</span>
+        </div>
+        <div class="exp-meta">
+          <div class="exp-date">Mar 2023 – Mar 2025</div>
+          <div class="exp-loc">Gothenburg, Sweden</div>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div>
+          <div class="exp-role">Co-Founder & Chief Designer</div>
+          <div class="exp-org">Emofria AB — emo-fria.webflow.io</div>
+          <ul class="exp-bullets">
+            <li>CE-certified portable air purifier targeting allergy elimination for the EU market</li>
+            <li>Led full brand design, product series, supply chain, website, and CE certification</li>
+          </ul>
+          <span class="exp-tag tag-founder">Startup</span>
+        </div>
+        <div class="exp-meta">
+          <div class="exp-date">Jun 2024 – Present</div>
+          <div class="exp-loc">Västerås, Sweden</div>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div>
+          <div class="exp-role">XR Product Developer</div>
+          <div class="exp-org">BIGmind Innovation</div>
+          <ul class="exp-bullets">
+            <li>Led development of XR Smart City platform in Unity; showcased at Shenzhen Design Week 2022</li>
+            <li>Transformed the company from product design to encompass full UI/UX practice</li>
+            <li>Researched sustainability strategy and digital twin applications for smart cities</li>
+            <li>Tools: Unity, C#, VRTK, Vuforia, Rhino, Adobe Creative Suite</li>
+          </ul>
+          <span class="exp-tag tag-dev">XR Development</span>
+        </div>
+        <div class="exp-meta">
+          <div class="exp-date">Nov 2021 – Feb 2023</div>
+          <div class="exp-loc">Gothenburg, Sweden</div>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div>
+          <div class="exp-role">Co-Founder & Chief Designer</div>
+          <div class="exp-org">LjUs AB</div>
+          <ul class="exp-bullets">
+            <li>Co-founded LjUs Light: an IoT + machine learning interactive light therapy device for winter depression</li>
+            <li>Led full UX/UI design process via Figma; built AR-enhanced user experiences</li>
+          </ul>
+          <span class="exp-tag tag-founder">Startup</span>
+        </div>
+        <div class="exp-meta">
+          <div class="exp-date">Jun 2019 – Apr 2022</div>
+          <div class="exp-loc">Gothenburg, Sweden</div>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div>
+          <div class="exp-role">Assistant Designer</div>
+          <div class="exp-org">ArConnect Studio</div>
+          <ul class="exp-bullets">
+            <li>Architectural and spatial design work in an international studio environment</li>
+          </ul>
+        </div>
+        <div class="exp-meta">
+          <div class="exp-date">Jun 2019 – Sep 2019</div>
+          <div class="exp-loc">Dali, China</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" style="max-width:1300px; margin: 0 auto;">
+
+  <!-- ── Education ── -->
+  <section class="section reveal" id="education">
+    <p class="section-label">Academic Background</p>
+    <h2 class="section-title">Education &<br><em>Training</em></h2>
+
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-school">Chalmers Tekniska Högskola</div>
+        <div class="edu-degree">PhD Candidate<br>Production System — Human Centric Automation</div>
+        <div class="edu-date">March 2023 – March 2025</div>
+        <p class="edu-note">Full-paid PhD position with 20% teaching and department duties. Focus on AI-integrated XR for human-centered production environments.</p>
+      </div>
+      <div class="edu-card">
+        <div class="edu-school">Chalmers Tekniska Högskola</div>
+        <div class="edu-degree">M.S. Architecture Design & Planning for a Sustainable Future</div>
+        <div class="edu-date">Sep 2019 – Jun 2021</div>
+        <p class="edu-note">Interdisciplinary program bridging architecture, technology, and sustainability. Graduated with academic distinction.</p>
+        <span class="edu-award">🏆 Chalmers IPOET Scholarship</span>
+      </div>
+      <div class="edu-card">
+        <div class="edu-school">Wuhan University</div>
+        <div class="edu-degree">B.Arch. Architecture</div>
+        <div class="edu-date">Sep 2014 – Jun 2019</div>
+        <p class="edu-note">Five-year professional degree in architecture. Foundation in spatial design, structural systems, and design thinking.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" style="max-width:1300px; margin: 0 auto;">
+
+  <!-- ── Skills ── -->
+  <section class="section reveal" id="skills">
+    <p class="section-label">Toolbox</p>
+    <h2 class="section-title">Skills &<br><em>Capabilities</em></h2>
+
+    <div class="skills-wrapper">
+      <div>
+        <div class="skills-group-title">Technical Tools</div>
+        <div class="skill-chips">
+          <span class="chip chip-tech">Unity / C#</span>
+          <span class="chip chip-tech">Python</span>
+          <span class="chip chip-tech">Rhino 3D</span>
+          <span class="chip chip-tech">Figma</span>
+          <span class="chip chip-tech">VRTK</span>
+          <span class="chip chip-tech">Vuforia</span>
+          <span class="chip chip-tech">Emulate3D</span>
+          <span class="chip chip-tech">Visual Component</span>
+          <span class="chip chip-tech">IC.IDO</span>
+          <span class="chip chip-tech">Adobe Photoshop</span>
+          <span class="chip chip-tech">Adobe Illustrator</span>
+          <span class="chip chip-tech">Adobe InDesign</span>
+          <span class="chip chip-tech">AI Prompt Engineering</span>
+        </div>
+
+        <div class="skills-group-title">Research Methods</div>
+        <div class="skill-chips">
+          <span class="chip chip-tech">HRV Analysis</span>
+          <span class="chip chip-tech">NASA-TLX</span>
+          <span class="chip chip-tech">RSME</span>
+          <span class="chip chip-tech">User Testing</span>
+          <span class="chip chip-tech">Experiment Design</span>
+          <span class="chip chip-tech">Digital Twin</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="skills-group-title">Strengths</div>
+        <div class="skill-chips">
+          <span class="chip chip-soft">Decision Making</span>
+          <span class="chip chip-soft">Analytical Thinking</span>
+          <span class="chip chip-soft">Entrepreneur Mindset</span>
+          <span class="chip chip-soft">Team Leadership</span>
+          <span class="chip chip-soft">Multidisciplinary</span>
+          <span class="chip chip-soft">Risk Management</span>
+          <span class="chip chip-soft">Creative Problem-Solving</span>
+          <span class="chip chip-soft">International Collaboration</span>
+        </div>
+
+        <div class="skills-group-title">Languages</div>
+        <div class="lang-list">
+          <div class="lang-item">
+            <span class="lang-name">English</span>
+            <div class="lang-dots">
+              <div class="dot filled"></div><div class="dot filled"></div>
+              <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div>
+            </div>
+            <span style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-dim);margin-left:0.5rem;">Fluent</span>
+          </div>
+          <div class="lang-item">
+            <span class="lang-name">Mandarin</span>
+            <div class="lang-dots">
+              <div class="dot filled"></div><div class="dot filled"></div>
+              <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div>
+            </div>
+            <span style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-dim);margin-left:0.5rem;">Native</span>
+          </div>
+          <div class="lang-item">
+            <span class="lang-name">Swedish</span>
+            <div class="lang-dots">
+              <div class="dot filled"></div><div class="dot filled"></div>
+              <div class="dot filled"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+            <span style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-dim);margin-left:0.5rem;">Intermediate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" style="max-width:1300px; margin: 0 auto;">
+
+  <!-- ── Proud of ── -->
+  <section class="section reveal">
+    <p class="section-label">Core Identity</p>
+    <h2 class="section-title">What I'm<br><em>Most Proud Of</em></h2>
+    <div class="proud-grid">
+      <div class="proud-card">
+        <div class="proud-icon">⚙️</div>
+        <div class="proud-title">Decision Making</div>
+        <p class="proud-desc">Analytical thinking and predictive management of potential risks. Comfortable navigating ambiguous, high-stakes situations across research and entrepreneurship.</p>
+      </div>
+      <div class="proud-card">
+        <div class="proud-icon">🌱</div>
+        <div class="proud-title">Stay Hungry, Stay Foolish</div>
+        <p class="proud-desc">Always humble to learn in multidisciplinary fields. Bridging architecture, HCI, XR, and AI through continuous curiosity and hands-on experimentation.</p>
+      </div>
+      <div class="proud-card">
+        <div class="proud-icon">🚀</div>
+        <div class="proud-title">Entrepreneur Mindset</div>
+        <p class="proud-desc">Self-motivated with strong work ethics. Founded two startups from concept to market, while maintaining rigorous academic research in parallel.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" style="max-width:1300px; margin: 0 auto;">
+
+  <!-- ── Contact ── -->
+  <section class="section reveal" id="contact">
+    <p class="section-label">Get in Touch</p>
+    <h2 class="section-title">Let's<br><em>Connect</em></h2>
+    <div class="contact-wrapper">
+      <div>
+        <p class="contact-intro">
+          "Open to collaborations in XR research, human-centered design, AI applications, and entrepreneurial ventures."
+        </p>
+        <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.8;">
+          Whether you're exploring partnerships in Industry 5.0, VR/AR research, product design, or academic collaboration — feel free to reach out. I'm always happy to discuss ideas at the frontier of technology and human experience.
+        </p>
+      </div>
+      <div class="contact-list">
+        <a href="mailto:huizhong@chalmers.se" class="contact-item">
+          <div class="contact-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          huizhong@chalmers.se
+        </a>
+        <a href="https://www.linkedin.com/in/huizhongcao/" target="_blank" class="contact-item">
+          <div class="contact-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--purple-light)"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+          linkedin.com/in/huizhongcao
+        </a>
+        <a href="https://scholar.google.com/citations?user=7JIwY8oAAAAJ&hl=en" target="_blank" class="contact-item">
+          <div class="contact-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--purple-light)"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 10a8 8 0 0 1 7.162 3.44L24 9.5z"/></svg>
+          </div>
+          Google Scholar Profile
+        </a>
+        <a href="https://research.chalmers.se/en/person/huizhong" target="_blank" class="contact-item">
+          <div class="contact-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          research.chalmers.se/huizhong
+        </a>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 9.74a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.59 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 6 6l.93-.93a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 18"/></svg>
+          </div>
+          +46 768842590
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <span class="footer-text">HUIZHONG CAO · GOTHENBURG, SWEDEN</span>
+    <span class="footer-copy">© 2025 · Built for GitHub Pages</span>
+  </footer>
+
+</div><!-- /site-wrapper -->
+
+<script>
+  // ── Canvas particle field ──
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function initParticles() {
+    particles = [];
+    const count = Math.floor((W * H) / 18000);
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.5 + 0.3,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        alpha: Math.random() * 0.4 + 0.1,
+        hue: Math.random() > 0.6 ? 260 : 40
+      });
+    }
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${p.hue}, 70%, 75%, ${p.alpha})`;
+      ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    });
+    requestAnimationFrame(drawParticles);
+  }
+
+  resize(); initParticles(); drawParticles();
+  window.addEventListener('resize', () => { resize(); initParticles(); });
+
+  // ── Scroll progress ──
+  const bar = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    bar.style.width = pct + '%';
+  });
+
+  // ── Reveal on scroll ──
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
