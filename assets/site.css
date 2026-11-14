@@ -9,7 +9,7 @@ html{scroll-padding-top:8rem}
 [id]{scroll-margin-top:1rem}
 .site-header{position:sticky;top:0;z-index:5;background:var(--paper)}
 .header-inner{gap:1.5rem;min-height:100px}
-#primary-nav ul{gap:.35rem 1.1rem;flex-wrap:wrap;justify-content:flex-end}
+#primary-nav ul{gap:.35rem .85rem;flex-wrap:wrap;justify-content:flex-end}
 #primary-nav a{display:inline-block;font-size:.82rem}
 .hero-timeline{font-size:.8rem;color:var(--muted);margin-top:.8rem;max-width:35rem}
 .hero-timeline span{padding-inline:.25rem}
@@ -33,3 +33,6 @@ html{scroll-padding-top:8rem}
 @media(min-width:701px) and (max-width:1050px){.header-inner{align-items:flex-start;padding-block:1rem}#primary-nav{max-width:30rem}}
 @media(max-width:700px){html{scroll-padding-top:7rem}.site-header:has(.menu-toggle[aria-expanded="true"]){position:relative}#primary-nav ul{justify-content:flex-start}#primary-nav a{font-size:.9rem;min-height:44px}.compact-year{grid-template-columns:1fr}.compact-year>h4{padding-bottom:.5rem}.publication-compact{grid-column:1}.portfolio-grid{grid-template-columns:1fr}.hero-timeline{line-height:1.8}.home-publications>.publication h3{font-size:1.2rem}}
 @media print{.site-header{position:static}.home-publications,#projects,#portfolio{break-inside:auto}.publication,.project,.portfolio-card{break-inside:avoid}}
+
+/* Allow the website directory to flow across printed pages. */
+@media print{#websites{break-inside:auto}}
