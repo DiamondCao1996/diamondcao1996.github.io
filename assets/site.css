@@ -4,3 +4,32 @@
 @media(max-width:700px){.header-inner{flex-wrap:wrap;gap:1rem;min-height:96px;padding-block:1rem}.brand{font-size:1.25rem}.menu-toggle:not([hidden]){display:block}#primary-nav{width:100%}#primary-nav ul{flex-wrap:wrap;gap:.5rem 1.5rem;padding-bottom:.5rem}#primary-nav a{display:block}.hero{grid-template-columns:1fr;padding-block:3rem;gap:2.5rem}.hero h1{font-size:clamp(2.65rem,10vw,3.8rem)}.portrait{max-width:340px;width:85%;justify-self:center}.section{padding-block:2.8rem}.about,.themes,.contact,.projects,.footer-grid,.skills{grid-template-columns:1fr}.themes{gap:2rem}.section-heading{display:block}.section-heading>a{display:inline-block;margin-bottom:1rem}.timeline-entry{grid-template-columns:1fr;gap:.25rem}.page-intro{padding-block:3rem}.footer-bottom{flex-direction:column;gap:.3rem}.contact{gap:2rem}.skills{gap:2rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
 @media print{.menu-toggle,.site-header nav,.skip-link{display:none!important}.hero{padding-block:2rem}.section{break-inside:avoid}body{font-size:11pt;background:white}.site-footer{margin-top:2rem}.page-intro{padding-block:2rem}a{color:inherit}}
+/* One-page overview: compact records and a navigation that fits the full outline. */
+html{scroll-padding-top:8rem}
+[id]{scroll-margin-top:1rem}
+.site-header{position:sticky;top:0;z-index:5;background:var(--paper)}
+.header-inner{gap:1.5rem;min-height:100px}
+#primary-nav ul{gap:.35rem 1.1rem;flex-wrap:wrap;justify-content:flex-end}
+#primary-nav a{display:inline-block;font-size:.82rem}
+.hero-timeline{font-size:.8rem;color:var(--muted);margin-top:.8rem;max-width:35rem}
+.hero-timeline span{padding-inline:.25rem}
+.home-publications>.publication{padding-block:1.4rem;max-width:none}
+.home-publications>.publication h3{font-size:1.3rem}
+.library-intro{font-size:.9rem;max-width:52rem}
+.compact-year{display:grid;grid-template-columns:5rem minmax(0,1fr);column-gap:1.5rem;margin-top:2rem}
+.compact-year>h4{font:1.5rem Georgia,serif;padding-top:1.1rem}
+.publication-compact{grid-column:2;max-width:none;padding-block:1rem}
+.publication-compact h5{font:500 1rem/1.5 system-ui,sans-serif;margin:0;max-width:56rem}
+.publication-compact .eyebrow{font-size:.68rem;margin-bottom:.35rem}
+.publication-compact .authors,.publication-compact .venue{font-size:.8rem;margin-top:.3rem}
+.publication-compact .record-links{font-size:.8rem;margin-top:.4rem;gap:1rem}
+.publication-compact .note{font-size:.8rem;margin-top:.5rem}
+.more-link{margin-top:2rem;font-size:.9rem}
+.portfolio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 2rem;margin-top:2rem}
+.portfolio-card{padding:1.5rem 0;border-top:1px solid var(--line)}
+.portfolio-card h3{font:400 1.3rem/1.4 Georgia,serif}
+.portfolio-card p{font-size:.9rem;color:var(--muted);margin-top:.6rem;max-width:32rem}
+#experience .timeline-entry,#education .timeline-entry{padding-block:1.5rem}
+@media(min-width:701px) and (max-width:1050px){.header-inner{align-items:flex-start;padding-block:1rem}#primary-nav{max-width:30rem}}
+@media(max-width:700px){html{scroll-padding-top:7rem}.site-header:has(.menu-toggle[aria-expanded="true"]){position:relative}#primary-nav ul{justify-content:flex-start}#primary-nav a{font-size:.9rem;min-height:44px}.compact-year{grid-template-columns:1fr}.compact-year>h4{padding-bottom:.5rem}.publication-compact{grid-column:1}.portfolio-grid{grid-template-columns:1fr}.hero-timeline{line-height:1.8}.home-publications>.publication h3{font-size:1.2rem}}
+@media print{.site-header{position:static}.home-publications,#projects,#portfolio{break-inside:auto}.publication,.project,.portfolio-card{break-inside:avoid}}

@@ -8,11 +8,23 @@ function setOpen(open) {
 }
 function syncMenu() { toggle.hidden = !mobile.matches; setOpen(false); }
 toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
-nav.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && mobile.matches) { setOpen(false); toggle.focus(); }
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && mobile.matches && toggle.getAttribute('aria-expanded') === 'true') {
+    setOpen(false);
+    toggle.focus();
+  }
 });
 nav.addEventListener('click', event => {
-  if (event.target.closest('a') && mobile.matches) { setOpen(false); toggle.focus(); }
+  const link = event.target.closest('a');
+  if (!link || !mobile.matches) return;
+  const destination = new URL(link.href);
+  setOpen(false);
+  // Keep keyboard focus at the section, so Tab continues through its content.
+  if (destination.pathname === location.pathname && destination.hash) {
+    const section = document.getElementById(destination.hash.slice(1));
+    if (section) section.focus({ preventScroll: true });
+  }
 });
 mobile.addEventListener('change', syncMenu);
+window.addEventListener('pageshow', syncMenu);
 syncMenu();
