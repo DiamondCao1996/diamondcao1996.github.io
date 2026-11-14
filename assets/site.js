@@ -3,7 +3,7 @@ const nav = document.querySelector('#primary-nav');
 const mobile = window.matchMedia('(max-width: 700px)');
 function setOpen(open) {
   toggle.setAttribute('aria-expanded', String(open));
-  toggle.textContent = open ? 'Close menu' : 'Menu';
+  toggle.textContent = open ? toggle.dataset.labelClose : toggle.dataset.labelOpen;
   nav.hidden = mobile.matches && !open;
 }
 function syncMenu() { toggle.hidden = !mobile.matches; setOpen(false); }
@@ -28,3 +28,19 @@ nav.addEventListener('click', event => {
 mobile.addEventListener('change', syncMenu);
 window.addEventListener('pageshow', syncMenu);
 syncMenu();
+
+// Carry section context only between language versions of the homepage.
+const homePaths = new Set(['/', '/zh/', '/sv/']);
+function syncLanguageLinks() {
+  if (!homePaths.has(location.pathname)) return;
+  document.querySelectorAll('.lang-switcher a').forEach(link => {
+    const destination = new URL(link.href);
+    if (homePaths.has(destination.pathname)) {
+      destination.hash = location.hash;
+      link.href = destination.pathname + destination.hash;
+    }
+  });
+}
+window.addEventListener('hashchange', syncLanguageLinks);
+window.addEventListener('pageshow', syncLanguageLinks);
+syncLanguageLinks();
